@@ -1,5 +1,4 @@
 import './App.css'
-import logo from './assets/logo.png'
 
 function App() {
   const scrollToContact = () => {
@@ -11,7 +10,6 @@ function App() {
     <div className="page">
       <header className="header">
         <div className="logo-wrap">
-          <img src={logo} alt="Optimize My Data logo" className="logo" />
           <h1 className="header-title">Optimize My Data</h1>
         </div>
       </header>
