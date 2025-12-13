@@ -1,9 +1,66 @@
 import './App.css'
+import { useState } from 'react'
 
 function App() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    company: '',
+    phone: '',
+    adSpend: 'Choose a range',
+    service: 'Audit & plan',
+    notes: ''
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState('')
+
   const scrollToContact = () => {
     const el = document.getElementById('contact')
     if (el) el.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitMessage('')
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || ''
+      const response = await fetch(`${apiUrl}/api/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setSubmitMessage('Thank you! We will contact you soon.')
+        setFormData({
+          name: '',
+          email: '',
+          company: '',
+          phone: '',
+          adSpend: 'Choose a range',
+          service: 'Audit & plan',
+          notes: ''
+        })
+      } else {
+        setSubmitMessage(data.message || 'Failed to send message. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      setSubmitMessage('Failed to send message. Please try again or contact us directly.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -98,27 +155,70 @@ function App() {
         <section id="contact" className="card">
           <h2 className="section-title">Book a strategy call</h2>
           <p className="muted">Tell me about your accounts and goals. I’ll reply same day.</p>
-          <form className="form" onSubmit={(e) => e.preventDefault()}>
+          <form className="form" onSubmit={handleSubmit}>
             <div className="muted" style={{ margin: '0 0 6px' }}>* Required fields</div>
+            {submitMessage && (
+              <div style={{ 
+                padding: '12px', 
+                borderRadius: '8px', 
+                marginBottom: '16px',
+                backgroundColor: submitMessage.includes('Thank you') ? '#e6f6ed' : '#fee2e2',
+                color: submitMessage.includes('Thank you') ? '#0b5b2b' : '#991b1b'
+              }}>
+                {submitMessage}
+              </div>
+            )}
             <div>
               <label>Name *</label>
-              <input type="text" placeholder="Your name" required />
+              <input 
+                type="text" 
+                name="name"
+                placeholder="Your name" 
+                value={formData.name}
+                onChange={handleInputChange}
+                required 
+              />
             </div>
             <div>
               <label>Work email *</label>
-              <input type="email" placeholder="you@company.com" required />
+              <input 
+                type="email" 
+                name="email"
+                placeholder="you@company.com" 
+                value={formData.email}
+                onChange={handleInputChange}
+                required 
+              />
             </div>
             <div>
               <label>Company *</label>
-              <input type="text" placeholder="Agency or business name" required />
+              <input 
+                type="text" 
+                name="company"
+                placeholder="Agency or business name" 
+                value={formData.company}
+                onChange={handleInputChange}
+                required 
+              />
             </div>
             <div>
               <label>Phone/WhatsApp *</label>
-              <input type="tel" placeholder="+91 78920 64440" required />
+              <input 
+                type="tel" 
+                name="phone"
+                placeholder="+91 78920 64440" 
+                value={formData.phone}
+                onChange={handleInputChange}
+                required 
+              />
             </div>
             <div>
               <label>Monthly ad spend (optional)</label>
-              <select defaultValue="Choose a range">
+              <select 
+                name="adSpend"
+                value={formData.adSpend}
+                onChange={handleInputChange}
+              >
                 <option>Choose a range</option>
                 <option>$300–$3k</option>
                 <option>$3k–$10k</option>
@@ -129,7 +229,11 @@ function App() {
             </div>
             <div>
               <label>What do you need? (optional)</label>
-              <select defaultValue="Audit & plan">
+              <select 
+                name="service"
+                value={formData.service}
+                onChange={handleInputChange}
+              >
                 <option>Audit & plan</option>
                 <option>Full build/cleanup</option>
                 <option>Ongoing management</option>
@@ -138,9 +242,17 @@ function App() {
             </div>
             <div>
               <label>Notes (optional)</label>
-              <textarea rows="3" placeholder="Current challenges, goals, timelines" />
+              <textarea 
+                rows="3" 
+                name="notes"
+                placeholder="Current challenges, goals, timelines"
+                value={formData.notes}
+                onChange={handleInputChange}
+              />
             </div>
-            <button className="btn primary" type="submit">Send & schedule</button>
+            <button className="btn primary" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Sending...' : 'Send & schedule'}
+            </button>
           </form>
           <div className="muted contact-note">
             Prefer chat? <a href="https://wa.me/917892064440" target="_blank" rel="noopener noreferrer" className="link">WhatsApp</a> or call +91 78920 64440.
