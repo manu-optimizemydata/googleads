@@ -56,6 +56,8 @@
   max-width: 1080px;
   margin: 0 auto;
   padding: 0 20px 64px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .hero {
@@ -68,6 +70,9 @@
   border: 1px solid #e5e8f0;
   box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .hero h1 {
@@ -111,6 +116,7 @@
   text-align: left;
   max-width: 820px;
   color: #0f172a;
+  width: 100%;
 }
 
 .cta-row {
@@ -270,8 +276,129 @@ textarea {
   color: #0b5b2b;
 }
 
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .header {
+    padding: 20px 16px 12px;
+  }
+
+  .logo {
+    height: 60px;
+  }
+
+  .header-title {
+    font-size: 20px;
+  }
+
+  .container {
+    padding: 0 16px 40px;
+  }
+
+  .hero {
+    padding: 24px 16px;
+    text-align: center;
+  }
+
+  .hero h2 {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .hero-lead {
+    font-size: 16px;
+  }
+
+  .subheading {
+    font-size: 16px;
+  }
+
+  .bullets {
+    text-align: left;
+    font-size: 14px;
+    padding: 0 8px;
+  }
+
+  .bullets div {
+    margin-bottom: 8px;
+  }
+
+  .cta-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 15px;
+  }
+
+  .trust {
+    flex-direction: column;
+    text-align: center;
+    gap: 6px;
+    font-size: 13px;
+  }
+
+  .card {
+    padding: 16px;
+    margin-top: 16px;
+  }
+
+  .section-title {
+    font-size: 20px;
+  }
+
+  .two-col {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .chips {
+    justify-content: center;
+  }
+
+  .chip {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  input,
+  select,
+  textarea {
+    padding: 10px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  label {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h2 {
+    font-size: 24px;
+  }
+
+  .hero-lead {
+    font-size: 15px;
+  }
+
+  .bullets {
+    font-size: 13px;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
+
+  .stat {
+    font-size: 16px;
+  }
+}
+
 @media (max-width: 900px) {
-  .hero h1 {
+  .hero h2 {
     font-size: 32px;
   }
 
