@@ -1,4 +1,5 @@
 import './App.css'
+import logo from './assets/logo.png'
 import { useState } from 'react'
 
 function App() {
@@ -30,7 +31,9 @@ function App() {
     setSubmitMessage('')
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || ''
+      // Use environment variable if set, otherwise use proxy in dev or default to localhost:3001
+      const apiUrl = import.meta.env.VITE_API_URL || 
+        (import.meta.env.DEV ? '' : 'http://localhost:3001')
       const response = await fetch(`${apiUrl}/api/contact`, {
         method: 'POST',
         headers: {
@@ -38,6 +41,11 @@ function App() {
         },
         body: JSON.stringify(formData),
       })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: 'Network error' }))
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`)
+      }
 
       const data = await response.json()
 
@@ -57,7 +65,11 @@ function App() {
       }
     } catch (error) {
       console.error('Error:', error)
-      setSubmitMessage('Failed to send message. Please try again or contact us directly.')
+      // Provide a more user-friendly error message
+      const errorMsg = error.message.includes('fetch') || error.message.includes('Network') 
+        ? 'Network error. Please check your connection and ensure the server is running.'
+        : error.message
+      setSubmitMessage(`Failed to send message: ${errorMsg}. Please try again or contact us directly.`)
     } finally {
       setIsSubmitting(false)
     }
@@ -67,6 +79,7 @@ function App() {
     <div className="page">
       <header className="header">
         <div className="logo-wrap">
+          <img src={logo} alt="Optimize My Data logo" className="logo" />
           <h1 className="header-title">Optimize My Data</h1>
         </div>
       </header>

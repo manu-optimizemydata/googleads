@@ -2,7 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
+// Load default .env and fall back to .env.local if present
 dotenv.config();
+dotenv.config({ path: '.env.local', override: false });
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -19,6 +21,7 @@ const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
 
 app.post('/api/contact', async (req, res) => {
   try {
+    console.log('Received form submission:', req.body);
     const { name, email, company, phone, adSpend, service, notes } = req.body;
 
     // Create email content
@@ -62,9 +65,17 @@ app.post('/api/contact', async (req, res) => {
       })
     });
 
-    const result = await response.json();
+    let result;
+    try {
+      result = await response.json();
+    } catch (jsonError) {
+      const text = await response.text();
+      console.error('Brevo API response (not JSON):', text);
+      throw new Error('Invalid response from email service');
+    }
 
     if (response.ok) {
+      console.log('Email sent successfully:', result.messageId);
       res.status(200).json({ 
         success: true, 
         message: 'Thank you! We will contact you soon.',
@@ -75,7 +86,7 @@ app.post('/api/contact', async (req, res) => {
       res.status(500).json({ 
         success: false, 
         message: 'Failed to send message. Please try again or contact us directly.',
-        error: result.message || 'Unknown error'
+        error: result.message || result.error || 'Unknown error'
       });
     }
   } catch (error) {
@@ -91,3 +102,4 @@ app.listen(port, () => {
   console.log(`Server running on port ${port}`);
   console.log(`Brevo API configured for: manu@optimizemydata.com`);
 });
+
