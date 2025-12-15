@@ -31,9 +31,8 @@ function App() {
     setSubmitMessage('')
 
     try {
-      // Use environment variable if set, otherwise use proxy in dev or default to localhost:3001
-      const apiUrl = import.meta.env.VITE_API_URL || 
-        (import.meta.env.DEV ? '' : 'http://localhost:3001')
+      // Use environment variable if set; otherwise rely on same-origin/proxy
+      const apiUrl = import.meta.env.VITE_API_URL || ''
       const response = await fetch(`${apiUrl}/api/contact`, {
         method: 'POST',
         headers: {
