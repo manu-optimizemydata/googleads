@@ -31,8 +31,25 @@ export default async function handler(req, res) {
   const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
 
   try {
-    console.log('Received form submission:', req.body);
-    const { name, email, company, phone, adSpend, service, notes } = req.body;
+    console.log('Received form submission:', JSON.stringify(req.body));
+    console.log('Request method:', req.method);
+    console.log('Request headers:', JSON.stringify(req.headers));
+    
+    // Parse body if it's a string (Vercel sometimes sends string)
+    let body = req.body;
+    if (typeof body === 'string') {
+      try {
+        body = JSON.parse(body);
+      } catch (e) {
+        console.error('Failed to parse body as JSON:', e);
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Invalid request body' 
+        });
+      }
+    }
+    
+    const { name, email, company, phone, adSpend, service, notes } = body;
 
     // Validate required fields
     if (!name || !email || !company || !phone) {
@@ -100,11 +117,16 @@ export default async function handler(req, res) {
         messageId: result.messageId 
       });
     } else {
-      console.error('Brevo API error:', result);
+      console.error('Brevo API error - Status:', response.status);
+      console.error('Brevo API error - Response:', JSON.stringify(result));
+      console.error('Brevo API error - Full result:', result);
+      
+      // Return more detailed error for debugging
       return res.status(500).json({ 
         success: false, 
         message: 'Failed to send message. Please try again or contact us directly.',
-        error: result.message || result.error || 'Unknown error'
+        error: result.message || result.error || `Brevo API returned status ${response.status}`,
+        details: process.env.NODE_ENV === 'development' ? result : undefined
       });
     }
   } catch (error) {
