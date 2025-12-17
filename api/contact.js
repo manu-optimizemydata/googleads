@@ -20,9 +20,11 @@ export default async function handler(req, res) {
   const BREVO_API_KEY = process.env.BREVO_API_KEY;
   if (!BREVO_API_KEY) {
     console.error('Error: BREVO_API_KEY environment variable is not set');
+    console.error('Available env vars:', Object.keys(process.env).filter(k => k.includes('BREVO')));
     return res.status(500).json({ 
       success: false, 
-      message: 'Server configuration error' 
+      message: 'Server configuration error: BREVO_API_KEY not set',
+      error: 'Missing BREVO_API_KEY environment variable'
     });
   }
 
@@ -107,9 +109,12 @@ export default async function handler(req, res) {
     }
   } catch (error) {
     console.error('Error sending email:', error);
+    console.error('Error stack:', error.stack);
+    console.error('Error message:', error.message);
     return res.status(500).json({ 
       success: false, 
-      message: 'Failed to send message. Please try again or contact us directly.' 
+      message: 'Failed to send message. Please try again or contact us directly.',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 }
