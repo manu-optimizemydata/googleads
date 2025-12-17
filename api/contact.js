@@ -1,47 +1,42 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
+// Vercel serverless function for contact form
+export default async function handler(req, res) {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-// Load default .env and fall back to .env.local if present
-dotenv.config();
-dotenv.config({ path: '.env.local', override: false });
+  // Handle preflight
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
 
-const app = express();
-const port = process.env.PORT || 3001;
+  // Only allow POST requests
+  if (req.method !== 'POST') {
+    return res.status(405).json({ success: false, message: 'Method not allowed' });
+  }
 
-// Configure CORS for production
-const allowedOrigins = [
-  'https://www.ppcexpert.online',
-  'https://ppcexpert.online',
-  'http://localhost:5173',
-  'http://localhost:3000'
-];
+  const BREVO_API_KEY = process.env.BREVO_API_KEY;
+  if (!BREVO_API_KEY) {
+    console.error('Error: BREVO_API_KEY environment variable is not set');
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Server configuration error' 
+    });
+  }
 
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
-app.use(express.json());
+  const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
 
-const BREVO_API_KEY = process.env.BREVO_API_KEY;
-if (!BREVO_API_KEY) {
-  console.error('Error: BREVO_API_KEY environment variable is not set');
-  process.exit(1);
-}
-const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
-
-app.post('/api/contact', async (req, res) => {
   try {
     console.log('Received form submission:', req.body);
     const { name, email, company, phone, adSpend, service, notes } = req.body;
+
+    // Validate required fields
+    if (!name || !email || !company || !phone) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Missing required fields' 
+      });
+    }
 
     // Create email content
     const emailContent = `
@@ -95,14 +90,14 @@ app.post('/api/contact', async (req, res) => {
 
     if (response.ok) {
       console.log('Email sent successfully:', result.messageId);
-      res.status(200).json({ 
+      return res.status(200).json({ 
         success: true, 
         message: 'Thank you! We will contact you soon.',
         messageId: result.messageId 
       });
     } else {
       console.error('Brevo API error:', result);
-      res.status(500).json({ 
+      return res.status(500).json({ 
         success: false, 
         message: 'Failed to send message. Please try again or contact us directly.',
         error: result.message || result.error || 'Unknown error'
@@ -110,15 +105,10 @@ app.post('/api/contact', async (req, res) => {
     }
   } catch (error) {
     console.error('Error sending email:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       success: false, 
       message: 'Failed to send message. Please try again or contact us directly.' 
     });
   }
-});
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-  console.log(`Brevo API configured for: manu@optimizemydata.com`);
-});
+}
 
