@@ -146,7 +146,7 @@ function App() {
           </div>
         </section>
 
-        <section className="card">
+        <section id="how-it-works" className="card">
           <h2 className="section-title">How it works</h2>
           <div className="list">
             <div><strong>48-hour audit:</strong> quick wins, risks, and forecast.</div>
