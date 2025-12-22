@@ -114,7 +114,7 @@ function App() {
         </section>
 
         <section className="two-col">
-          <div className="card">
+          <div id="what-you-get" className="card">
             <h2 className="section-title">What you get</h2>
             <div className="list">
               <div><strong>Audit & rebuild:</strong> account audit, SKAG/structured match, negatives, QS cleanup.</div>
