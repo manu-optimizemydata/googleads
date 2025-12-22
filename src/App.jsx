@@ -131,7 +131,7 @@ function App() {
             </div>
           </div>
 
-          <div className="card">
+          <div id="recent-results" className="card">
             <h2 className="section-title">Recent results</h2>
             <div className="list">
               <div><span className="stat">+42% leads</span> at -28% CPL for B2B SaaS within 45 days.</div>
