@@ -156,7 +156,7 @@ function App() {
           </div>
         </section>
 
-        <section className="card">
+        <section id="faq" className="card">
           <h2 className="section-title">FAQs</h2>
           <div className="faq"><strong>Do you do white label?</strong><div className="muted">Yes—client decks, call notes, and Slack-ready updates.</div></div>
           <div className="faq"><strong>Budget fit?</strong><div className="muted">Commonly $3k–$50k/mo ad spend; tailored to efficiency or scale goals.</div></div>
