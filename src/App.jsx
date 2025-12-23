@@ -89,7 +89,7 @@ function App() {
           <p className="hero-lead">
             High-intent search campaigns built to capture leads fast. Audits, buildouts, and optimization tailored for in-house teams and white-label partners.
           </p>
-          <h3 className="subheading">As an ad specialist, I can help you with:</h3>
+          <h3 id="ad-specialist-help" className="subheading">As an ad specialist, I can help you with:</h3>
           <div className="bullets">
             <div>• Exact/phrase match focus (e.g., “google ads consultant”, “white label google ads management”, “google ads expert for small business”) with tight negatives and SKAG/structured match.</div>
             <div>• Industries: B2B SaaS, professional services, local services, eCommerce add-on, agency white-label clients.</div>
