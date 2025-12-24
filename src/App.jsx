@@ -113,6 +113,27 @@ function App() {
           </div>
         </section>
 
+        <section id="ppc-expert" className="card">
+          <h2 className="section-title">PPC Expert & Google Ads Specialist</h2>
+          <p className="hero-lead" style={{ marginBottom: '24px' }}>
+            With years of hands-on experience managing high-performing Google Ads campaigns, I bring deep expertise in pay-per-click (PPC) advertising that drives measurable results for agencies and businesses.
+          </p>
+          <div className="list">
+            <div><strong>Certified PPC Expert:</strong> Google Ads certified with proven track record across search, display, shopping, and Performance Max campaigns.</div>
+            <div><strong>Data-driven approach:</strong> Every decision backed by analytics, A/B testing, and conversion tracking to maximize ROI and minimize wasted spend.</div>
+            <div><strong>Full-funnel expertise:</strong> From keyword research and ad copywriting to landing page optimization and conversion tracking—end-to-end PPC management.</div>
+            <div><strong>Advanced strategies:</strong> SKAG/STAG structures, negative keyword management, bid strategies, audience targeting, and automated bidding optimization.</div>
+            <div><strong>Multi-platform knowledge:</strong> Google Ads, Microsoft Advertising, and experience with Facebook/Meta Ads for integrated campaigns.</div>
+            <div><strong>Industry experience:</strong> Successfully managed PPC campaigns for B2B SaaS, professional services, eCommerce, local businesses, and agency white-label clients.</div>
+          </div>
+          <div className="chips" style={{ marginTop: '20px' }}>
+            <span className="chip">PPC Expert</span>
+            <span className="chip">Google Ads Certified</span>
+            <span className="chip">PPC Consultant</span>
+            <span className="chip">Pay-Per-Click Specialist</span>
+          </div>
+        </section>
+
         <section className="two-col">
           <div id="what-you-get" className="card">
             <h2 className="section-title">What you get</h2>
