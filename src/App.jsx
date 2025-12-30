@@ -77,7 +77,9 @@ function Home() {
     <div className="page">
       <header className="header">
         <div className="logo-wrap">
-          <img src={logo} alt="Optimize My Data logo" className="logo" />
+          <div className="logo-container">
+            <img src={logo} alt="Optimize My Data logo" className="logo" />
+          </div>
           <h1 className="header-title">Optimize My Data</h1>
         </div>
       </header>

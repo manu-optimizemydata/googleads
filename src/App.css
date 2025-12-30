@@ -24,9 +24,21 @@
   gap: 10px;
 }
 
+.logo-container {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  border: 1px solid #e5e8f0;
+}
+
 .logo {
-  height: 88px;
+  height: 60px;
   width: auto;
+  display: block;
 }
 
 .header-title {
