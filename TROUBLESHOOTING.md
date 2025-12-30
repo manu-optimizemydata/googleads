@@ -118,3 +118,7 @@ vercel --prod --force
 2. **Test endpoint directly** with curl (see above)
 3. **Share the error message** from browser console or Vercel logs
 
+
+
+
+

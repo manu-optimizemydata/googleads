@@ -1,16 +1,16 @@
 import './App.css'
 import logo from './assets/logo.png'
 import { useState } from 'react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
+import ThankYou from './ThankYou.jsx'
 
-function App() {
+function Home() {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     company: '',
-    phone: '',
-    adSpend: 'Choose a range',
-    service: 'Audit & plan',
-    notes: ''
+    phone: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
@@ -49,16 +49,15 @@ function App() {
       const data = await response.json()
 
       if (data.success) {
-        setSubmitMessage('Thank you! We will contact you soon.')
+        // Clear form data
         setFormData({
           name: '',
           email: '',
           company: '',
-          phone: '',
-          adSpend: 'Choose a range',
-          service: 'Audit & plan',
-          notes: ''
+          phone: ''
         })
+        // Navigate to thank you page
+        navigate('/thank-you')
       } else {
         setSubmitMessage(data.message || 'Failed to send message. Please try again.')
       }
@@ -248,44 +247,6 @@ function App() {
                 required 
               />
             </div>
-            <div>
-              <label>Monthly ad spend (optional)</label>
-              <select 
-                name="adSpend"
-                value={formData.adSpend}
-                onChange={handleInputChange}
-              >
-                <option>Choose a range</option>
-                <option>$300–$3k</option>
-                <option>$3k–$10k</option>
-                <option>$10k–$30k</option>
-                <option>$30k–$75k</option>
-                <option>$75k+</option>
-              </select>
-            </div>
-            <div>
-              <label>What do you need? (optional)</label>
-              <select 
-                name="service"
-                value={formData.service}
-                onChange={handleInputChange}
-              >
-                <option>Audit & plan</option>
-                <option>Full build/cleanup</option>
-                <option>Ongoing management</option>
-                <option>White-label support</option>
-              </select>
-            </div>
-            <div>
-              <label>Notes (optional)</label>
-              <textarea 
-                rows="3" 
-                name="notes"
-                placeholder="Current challenges, goals, timelines"
-                value={formData.notes}
-                onChange={handleInputChange}
-              />
-            </div>
             <button className="btn primary" type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Sending...' : 'Send & schedule'}
             </button>
@@ -296,6 +257,15 @@ function App() {
         </section>
       </main>
     </div>
+  )
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/thank-you" element={<ThankYou />} />
+    </Routes>
   )
 }
 
