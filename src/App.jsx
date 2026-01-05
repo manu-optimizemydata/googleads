@@ -87,7 +87,6 @@ function Home() {
         <nav className="header-nav">
           <Link to="/" className="nav-link">Home</Link>
           <a href="/#contact" className="nav-link">Contact Us</a>
-          <a href="https://www.ppcexpert.online/about-us/" className="nav-link">About Us</a>
         </nav>
       </header>
 
@@ -281,7 +280,6 @@ function Home() {
             <div className="footer-column">
               <h3 className="footer-heading">Quick Links</h3>
               <Link to="/" className="footer-link">Home</Link>
-              <a href="https://www.ppcexpert.online/about-us/" className="footer-link">About Us</a>
               <a href="/#contact" className="footer-link">Contact Us</a>
             </div>
             <div className="footer-column">
