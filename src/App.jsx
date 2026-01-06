@@ -15,6 +15,24 @@ function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
 
+  // Google Ads conversion tracking function
+  const gtag_report_conversion = (url) => {
+    if (typeof window !== 'undefined' && window.gtag) {
+      const callback = function () {
+        if (typeof(url) != 'undefined') {
+          window.location = url;
+        }
+      };
+      window.gtag('event', 'conversion', {
+        'send_to': 'AW-399659101/WUlACPLA1NkbEN2gyb4B',
+        'value': 1.0,
+        'currency': 'INR',
+        'event_callback': callback
+      });
+      return false;
+    }
+  }
+
   const scrollToContact = () => {
     const el = document.getElementById('contact')
     if (el) el.scrollIntoView({ behavior: 'smooth' })
@@ -49,6 +67,9 @@ function Home() {
       const data = await response.json()
 
       if (data.success) {
+        // Track conversion on form submission
+        gtag_report_conversion()
+        
         // Clear form data
         setFormData({
           name: '',
