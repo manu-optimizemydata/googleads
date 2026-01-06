@@ -1,8 +1,20 @@
 import './App.css'
 import logo from './assets/logo.png'
 import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
 
 function ThankYou() {
+  useEffect(() => {
+    // Google Ads conversion event
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'conversion', {
+        'send_to': 'AW-399659101/WUlACPLA1NkbEN2gyb4B',
+        'value': 1.0,
+        'currency': 'INR'
+      });
+    }
+  }, []);
+
   return (
     <div className="page">
       <header className="header">
